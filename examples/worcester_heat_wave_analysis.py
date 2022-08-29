@@ -91,12 +91,11 @@ class Input():
     station = os.path.join("example_data/Worcester/","USW00094746.csv")
     weather_file_name = "USA_MA_Worcester.Rgnl.AP.725095_TMY3.epw" 
     weather_files = [os.path.join("example_data/Worcester/",weather_file_name)]
-    random_seed = 5 #CHANGE 4564863 (start small)
-    # recommend keeping num_year = 1 and adding to start year if greater resolution is desired.
-    num_year = 1
-    start_years_local = [2025] #CHANGE ,2030,2035,2045,2050,2055,2060]
-    scenarios_local = ['SSP5-8.5'] #CHANGE ,'SSP3-7.0','SSP2-4.5','SSP1-2.6','SSP1-1.9']
-    num_realizations = 1
+    random_seed = 65675964
+    num_year = 1 # recommend keeping num_year = 1 and adding to start year if greater resolution is desired.
+    start_years_local = [2025,2050,2075,2100]
+    scenarios_local = ['SSP5-8.5','SSP3-7.0','SSP2-4.5','SSP1-2.6','SSP1-1.9']
+    num_realizations = 1 # talk to team about this number (recommends 100+)
 
     def __init__(self,start_years,scenarios,random_seed):
         self.start_years = start_years
@@ -119,7 +118,8 @@ class MEWSWrapper(Input):
         obj = ExtremeTemperatureWaves(self.station, 
                                       self.weather_files,
                                          use_local=True,random_seed=self.random_seed,
-                                         include_plots=False,run_parallel=False)
+                                         include_plots=False,run_parallel=False, 
+                                         unit_conversion=(5/9,-32*5/9)) # add farenheit multiplyer and off set to get deg C
         
         for start_year in self.start_years:
             for scenario in self.scenarios:
