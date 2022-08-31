@@ -81,11 +81,6 @@ class Input():
     # DO NOT CHANGE THIS!
     main_path = os.path.dirname(os.path.realpath("__file__"))
     
-    ## DELETE THIS (
-    #building_area = 4982.19 #m2
-    #plot_locations = r"C:\devel\MEWS\examples\example_data\Worcester\plots"
-    ## )
-
     ###### RUN MEWS
      
     station = os.path.join("example_data/Worcester/","USW00094746.csv")
@@ -95,7 +90,7 @@ class Input():
     num_year = 1 # recommend keeping num_year = 1 and adding to start year if greater resolution is desired.
     start_years_local = [2025,2050,2075,2100]
     scenarios_local = ['SSP5-8.5','SSP3-7.0','SSP2-4.5','SSP1-2.6','SSP1-1.9']
-    num_realizations = 1 # talk to team about this number (recommends 100+)
+    num_realizations = 100 # talk to team about this number (recommends 100+)
 
     def __init__(self,start_years,scenarios,random_seed):
         self.start_years = start_years
