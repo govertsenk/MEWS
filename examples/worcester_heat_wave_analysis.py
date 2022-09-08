@@ -91,6 +91,7 @@ class Input():
     start_years_local = [2025,2050,2075,2100]
     scenarios_local = ['SSP5-8.5','SSP3-7.0','SSP2-4.5','SSP1-2.6','SSP1-1.9']
     num_realizations = 100 # talk to team about this number (recommends 100+)
+ 
 
     def __init__(self,start_years,scenarios,random_seed):
         self.start_years = start_years
@@ -121,11 +122,12 @@ class MEWSWrapper(Input):
             
                 clim_scen.calculate_coef(scenario)
                 climate_temp_func = clim_scen.climate_temp_func
+                
                 # no need to process results, they are being written
                 obj.create_scenario(scenario, start_year, self.num_year, climate_temp_func, num_realization=self.num_realizations)
         self.wfile_names = obj.wfile_names
-        
-###################################################################################################
+#        
+####################################################################################################
 
 """PARTS OF THE FOLLOWING IS CODE BY CARLO BIANCO FROM NREL. It has not been approved
 for release onto GitHUB by NREL so you need to get his consent to post it.
@@ -588,46 +590,46 @@ class FinalPostProcess(Input):
                 
                 
 
-if __name__ == "__main__":
-     run_local = True
-     if run_local:
-         scenarios = ["SSP5-8.5"]
-         start_years = [2025]
-         random_seed = 519419765
-     else:
-         try:
-            opts, args = getopt.getopt(sys.argv[1:],"s:y:r",["scenario=","start_year=","random_seed="])
-         except getopt.GetoptError:
-            print("")
-            print('Input invalid')
-            print("")
-            sys.exit(2)
-            
-         if not opts:
-            print("")
-            print('No command line options given, you must have "--scenario=<IPCC scenario name>" and "--start_year=<year>"')
-            print("")
-            sys.exit(2)
-            
-         for opt, arg in opts:
-            if opt in ("-s","--scenario"):
-                 scenarios = [str(arg)]
-            elif opt in ("-y","--start_year"):
-                 start_years = [int(arg)]
-            elif opt in ("-r","--random_seed"):
-                random_seed = int(arg)
-  
-    # run MEWS
-     Inp = Input(start_years,scenarios,random_seed) 
+    if __name__ == "__main__":
+        run_local = True
+        if run_local:
+            random_seed = 65675964
+            start_years = [2025,2050,2075,2100]
+            scenarios = ['SSP1-1.9','SSP1-2.6','SSP2-4.5','SSP3-7.0','SSP5-8.5']
+        else:
+            try:
+               opts, args = getopt.getopt(sys.argv[1:],"s:y:r",["scenario=","start_year=","random_seed="])
+            except getopt.GetoptError:
+               print("")
+               print('Input invalid')
+               print("")
+               sys.exit(2)
+               
+            if not opts:
+               print("")
+               print('No command line options given, you must have "--scenario=<IPCC scenario name>" and "--start_year=<year>"')
+               print("")
+               sys.exit(2)
+               
+            for opt, arg in opts:
+               if opt in ("-s","--scenario"):
+                    scenarios = [str(arg)]
+               elif opt in ("-y","--start_year"):
+                    start_years = [int(arg)]
+               elif opt in ("-r","--random_seed"):
+                   random_seed = int(arg)
      
-     if not Inp.only_post_process:
-         objMEWS = MEWSWrapper(Inp)
- 
-         Inp.wfile_names = objMEWS.wfile_names
-     else:
-         objMEWS = None
-         Inp.wfile_names = None
-     
+        #run MEWS
+        Inp = Input(start_years,scenarios,random_seed) 
+        
+        if not Inp.only_post_process:
+            objMEWS = MEWSWrapper(Inp)
+        
+            Inp.wfile_names = objMEWS.wfile_names
+        else:
+            objMEWS = None
+            Inp.wfile_names = None
+        
 
     
 
